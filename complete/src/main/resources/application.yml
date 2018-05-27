@@ -1,0 +1,38 @@
+---
+#tag::security[]
+micronaut:
+  application:
+    name: security
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+      oauth:
+        enabled: true
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: pleaseChangeThisSecretForANewOne
+#end::security[]
+---
+#tag::ldap[]
+ldap:
+  server: ldap.forumsys.com
+  port: 389
+  basedn: cn=read-only-admin,dc=example,dc=com
+#end::ldap[]
+---
+#tag::datasource[]
+hibernate:
+  hbm2ddl:
+    auto: update
+dataSource:
+  driverClassName: org.h2.Driver
+  username: sa
+  password: ''
+  url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+#end::datasource[]

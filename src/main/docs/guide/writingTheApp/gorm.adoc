@@ -1,0 +1,18 @@
+include::{commondir}/common-gorm.adoc[]
+
+Add a GORM dependency to the project:
+
+[source,groovy]
+.build.gradle
+----
+ext {
+include::{sourceDir}/build.gradle[tag=extGorm]
+}
+
+dependencies {
+...
+..
+.
+include::{sourceDir}/build.gradle[tag=gorm]
+}
+----

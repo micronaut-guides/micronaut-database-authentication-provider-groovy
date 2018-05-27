@@ -1,0 +1,28 @@
+gettingStarted: 
+  title: Getting Started
+  requirements: What you will need
+  solution: Solution
+writingTheApp:
+  title: Writing the Application
+  securityLdap: Security LDAP
+  gorm:
+    title: GORM
+    domainClasses:
+      title: Domain Classes
+      user: User
+      role: Role
+      userrole: UserRole
+    dataServices: Data Services
+  securityApplication: Register Service
+  delegatingAuthenticationProvider:
+    title: Delegating Authentication Provider
+    userFetcher: User Fetcher
+    authoritiesFetcher: Authorities Fetcher
+    passwordEncoder: Password Encoder
+  ldapTest: LDAP Authentication Provider test
+  loginTest: Login Testing
+  oauthTest: Oauth Testing
+testingTheApp:
+  title: Testing the Application
+runningTheApp:
+  title: Running the Application

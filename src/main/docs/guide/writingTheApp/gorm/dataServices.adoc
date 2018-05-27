@@ -1,0 +1,25 @@
+include::{commondir}/common-gormdataservices.adoc[]
+
+Create various GORM Data services:
+
+[source,groovy]
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/services/UserGormService.groovy[]
+----
+
+<1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
+
+[source,groovy]
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/services/RoleGormService.groovy[]
+----
+
+<1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
+
+[source,groovy]
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/services/UserRoleGormService.groovy[]
+----
+
+<1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
+<2> GORM allows Statically-compiled JPA-QL Queries

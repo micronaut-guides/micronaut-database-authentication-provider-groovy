@@ -1,0 +1,3 @@
+In this guide, you will create a Micronaut app which uses multiple authentication providers - an LDAP and a database authentication providers.
+
+image::diagramm.svg[]

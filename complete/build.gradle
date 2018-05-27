@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE"
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
+    }
+}
+
+ext {
+//tag::extLdap[]
+    ldaptiveVersion = '1.2.3'
+//end::extLdap[]
+//tag::extGorm[]
+    gormVersion = '6.1.9.RELEASE'
+    h2Version = '1.4.196'
+    tomcatJdbcVersion = '8.5.28'
+//end::extGorm[]
+//tag::extSpringSecurityCrypto[]
+    springSecurityCryptoVersion='4.2.5.RELEASE'
+//end::extSpringSecurityCrypto[]
+}
+
+version "0.1"
+group "example"
+
+apply plugin:"io.spring.dependency-management"
+apply plugin:"com.github.johnrengelman.shadow"
+apply plugin:"application"
+apply plugin:"groovy"
+apply plugin:"java"
+apply plugin:"net.ltgt.apt-eclipse"
+apply plugin:"net.ltgt.apt-idea"
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.micronaut:bom:1.0.0-SNAPSHOT'
+    }
+}
+
+dependencies {
+    annotationProcessor "io.micronaut:inject-java"
+    compile "io.micronaut:http-client"
+    compile "io.micronaut:http-server-netty"
+    compile "io.micronaut:runtime-groovy"
+    compile "io.micronaut:inject"
+    compile "io.micronaut:runtime"
+    compileOnly "io.micronaut:inject-groovy"
+    compileOnly "io.micronaut:inject-java"
+    runtime "ch.qos.logback:logback-classic:1.2.3"
+    testCompile "io.micronaut:inject-groovy"
+    testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testCompile "junit:junit:4.12"
+    testCompile "io.micronaut:inject-java"
+
+    //tag::securityjwt[]
+    compile "io.micronaut:security-jwt"
+    //end::securityjwt[]
+
+    //tag::ldap[]
+    compile "org.ldaptive:ldaptive:${ldaptiveVersion}"
+    //end::ldap[]
+
+    //tag::springSecurityCrypto[]
+    compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
+    //end::springSecurityCrypto[]
+
+    //tag::gorm[]
+    compile "io.micronaut.configuration:hibernate-validator"
+    compile "io.micronaut.configuration:hibernate-gorm"
+    compile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
+    runtime "com.h2database:h2:$h2Version"
+    runtime "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
+    //end::gorm[]
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+mainClassName = "example.Application"
+compileJava.options.compilerArgs += '-parameters'
+compileTestJava.options.compilerArgs += '-parameters'

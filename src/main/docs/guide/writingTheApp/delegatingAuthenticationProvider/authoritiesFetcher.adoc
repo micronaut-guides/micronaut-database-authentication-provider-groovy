@@ -1,0 +1,12 @@
+Provide an implementation for http://docs.micronaut.io//api/io/micronaut/security/authentication/providers/AuthoritiesFetcher.html[AuthoritiesFetcher]:
+
+[source,groovy]
+.src/main/groovy/example/micronaut/services/AuthoritiesFetcherService.groovy
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/services/AuthoritiesFetcherService.groovy[]
+----
+
+<1> Use `javax.inject.Singleton` to designate a class a a singleton.
+<2> `UserRoleGormService` is injected via constructor injection.
+
+

@@ -1,0 +1,10 @@
+Create a `UserRole` which stores a many-to-many relationship between `User` and `Role`.
+
+[source,groovy]
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/domain/UserRole.groovy[]
+----
+
+<1> GORM entities should be annotated with `grails.persistence.Entity`.
+<2> Use of `GormEntity` to aid IDE support.
+

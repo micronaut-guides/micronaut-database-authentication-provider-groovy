@@ -1,0 +1,7 @@
+Micronaut ships with http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/DelegatingAuthenticationProvider.html[DelegatingAuthenticationProvider] which can be typically used in environments such as the one described in the next diagramm.
+
+image::delegating_authentication_provider.svg[]
+
+`DelegatingAuthenticationProvider` is not enabled unless you provide implementations for http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/UserFetcher.html[UserFetcher], http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/PasswordEncoder.html[PasswordEncoder] and http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/AuthoritiesFetcher.html[AuthoritiesFetcher].
+
+Next, we provide an implementation for those interfaces.
