@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton // <1>
 class AuthoritiesFetcherService implements AuthoritiesFetcher {
 
-    protected  final UserRoleGormService userRoleGormService
+    protected final UserRoleGormService userRoleGormService
 
     AuthoritiesFetcherService(UserRoleGormService userRoleGormService) {  // <2>
         this.userRoleGormService = userRoleGormService
@@ -17,6 +17,6 @@ class AuthoritiesFetcherService implements AuthoritiesFetcher {
 
     @Override
     Publisher<List<String>> findAuthoritiesByUsername(String username) {
-        Flowable.just(this.userRoleGormService.findAllAuthoritiesByUsername(username))
+        Flowable.just(userRoleGormService.findAllAuthoritiesByUsername(username))
     }
 }

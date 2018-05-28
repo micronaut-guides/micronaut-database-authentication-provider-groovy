@@ -1,4 +1,4 @@
-Provide an implementation for http://docs.micronaut.io//api/io/micronaut/security/authentication/providers/AuthoritiesFetcher.html[AuthoritiesFetcher]:
+Provide an implementation for http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/AuthoritiesFetcher.html[AuthoritiesFetcher]:
 
 [source,groovy]
 .src/main/groovy/example/micronaut/services/AuthoritiesFetcherService.groovy

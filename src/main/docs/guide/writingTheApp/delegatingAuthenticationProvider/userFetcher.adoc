@@ -1,4 +1,4 @@
-We provide an implementation for http://docs.micronaut.io/api/io/micronaut/security/authentication/providers/UserFetcher.html[UserFetcher]:
+We provide an implementation for http://docs.micronaut.io/snapshot/api/io/micronaut/security/authentication/providers/UserFetcher.html[UserFetcher]:
 
 [source,groovy]
 .src/main/groovy/example/micronaut/services/UserFetcherService.groovy
