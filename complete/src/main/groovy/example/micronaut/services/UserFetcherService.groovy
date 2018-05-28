@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton // <1>
 class UserFetcherService implements UserFetcher {
 
-    protected  final UserGormService userGormService
+    protected final UserGormService userGormService
 
     UserFetcherService(UserGormService userGormService) { // <2>
         this.userGormService = userGormService

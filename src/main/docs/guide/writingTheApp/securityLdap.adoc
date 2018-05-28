@@ -24,7 +24,7 @@ We are going to use an https://www.forumsys.com/tutorials/integration-how-to/lda
 
 Create several configuration properties matching those of the test LDAP Server.
 
-[source,groovy]
+[source,yaml]
 .src/main/resources/application.yml
 ----
 include::{sourceDir}/src/main/resources/application.yml[tag=ldap]
@@ -38,7 +38,7 @@ Create an implementation of `io.micronaut.security.authentication.Authentication
 include::{sourceDir}/src/main/groovy/example/micronaut/providers/LdapService.groovy[]
 ----
 
-<1> Use `javax.inject.Singleton` to designate a class a a singleton.
+<1> Use `javax.inject.Singleton` to designate a class as a singleton.
 <2> Implement `io.micronaut.security.authentication.AuthenticationProvider`
 <3> Several configuration values are injected via constructor injection.
 <4> Use the `javax.annotation.PostConstruct` annotation to trigger the method execution after dependency injection is done. Typically to perform any initialization.
