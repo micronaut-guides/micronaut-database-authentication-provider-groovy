@@ -44,10 +44,9 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom 'io.micronaut:bom:1.0.0.M1'
+        mavenBom 'io.micronaut:bom:1.0.0.M2'
     }
 }
-
 
 dependencies {
     annotationProcessor "io.micronaut:inject-java"
@@ -90,6 +89,8 @@ dependencies {
 shadowJar {
     mergeServiceFiles()
 }
+
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 mainClassName = "example.Application"
 compileJava.options.compilerArgs += '-parameters'
