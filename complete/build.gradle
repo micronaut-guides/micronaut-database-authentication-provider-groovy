@@ -11,9 +11,6 @@ buildscript {
 }
 
 ext {
-//tag::extLdap[]
-    ldaptiveVersion = '1.2.3'
-//end::extLdap[]
 //tag::extGorm[]
     gormVersion = '6.1.9.RELEASE'
     h2Version = '1.4.196'
@@ -40,6 +37,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencyManagement {
@@ -65,13 +63,13 @@ dependencies {
     testCompile "junit:junit:4.12"
     testCompile "io.micronaut:inject-java"
 
-    //tag::securityjwt[]
+    //tag::security-jwt[]
     compile "io.micronaut:security-jwt"
-    //end::securityjwt[]
+    //end::security-jwt[]
 
-    //tag::ldap[]
-    compile "org.ldaptive:ldaptive:${ldaptiveVersion}"
-    //end::ldap[]
+    //tag::security-ldap[]
+    compile "io.micronaut.configuration:security-ldap"
+    //end::security-ldap[]
 
     //tag::springSecurityCrypto[]
     compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"

@@ -1,22 +1,13 @@
-We are going to register an LDAP authentication provider. We use http://www.ldaptive.org[Ldaptive].
-
-____
-Ldaptive is a simple, extensible Java API for interacting with LDAP servers. It was designed to provide easy LDAP integration for application developers.
-____
-
-Modify `build.gradle` file to add the dependency:
+Micronaut supports authentication with LDAP out of the box. To get started, add the `security-ldap` dependency to your application.
 
 [source,groovy]
 .build.gradle
 ----
-ext {
-include::{sourceDir}/build.gradle[tag=extLdap]
-}
 dependencies {
 ...
 ..
 .
-include::{sourceDir}/build.gradle[tag=ldap]
+include::{sourceDir}/build.gradle[tag=security-ldap]
 }
 ----
 
@@ -27,19 +18,19 @@ Create several configuration properties matching those of the test LDAP Server.
 [source,yaml]
 .src/main/resources/application.yml
 ----
+micronaut:
+  ..
+  .
+  security:
+  ...
+  ..
 include::{sourceDir}/src/main/resources/application.yml[tag=ldap]
 ----
 
-Create an implementation of `io.micronaut.security.authentication.AuthenticationProvider`
-
-[source,groovy]
-.src/main/groovy/example/micronaut/providers/LdapService.groovy
-----
-include::{sourceDir}/src/main/groovy/example/micronaut/providers/LdapService.groovy[]
-----
-
-<1> Use `javax.inject.Singleton` to designate a class as a singleton.
-<2> Implement `io.micronaut.security.authentication.AuthenticationProvider`
-<3> Several configuration values are injected via constructor injection.
-<4> Use the `javax.annotation.PostConstruct` annotation to trigger the method execution after dependency injection is done. Typically to perform any initialization.
-<5> For successful authentication, return in instance of `UserDetails`.
+<1> The LDAP authentication in Micronaut supports configuration of one or more LDAP servers to authenticate with. You need to name each one. In this tutorial, we use `default`.
+<2> Each server has it's own settings and can be enabled or disabled.
+<3> Sets the manager DN
+<4> Sets the manager password.
+<5> Sets the base DN to search.
+<6> Enable group search.
+<7> Sets the base DN to search from.

@@ -1,1 +1,25 @@
 include::{commondir}/common-create-app-groovy.adoc[]
+
+Add `security-jwt` dependency:
+
+[source,groovy]
+.build.gradle
+----
+include::{sourceDir}/build.gradle[tag=security-jwt]
+----
+
+Modify `application.yml` to enable security:
+
+[source,yaml]
+.src/main/resources/application.yml
+----
+include::{sourceDir}/src/main/resources/application.yml[tag=security]
+----
+
+<1> Name your microservice as you wish
+<2> Enable Micronaut’s security capabilities
+<3> Expose `/login` endpoint
+<4> Expose /oauth/access_token endpoint as defined by section 6 of the OAuth 2.0 spec - Refreshing an Access Token.
+<5> Enable JWT based authentication
+<6> You can create a SecretSignatureConfiguration named `generator` via configuration as illustrated above. The generator signature is used to sign the issued JWT claims.
+<7> Change this by your own secret and keep it safe (do not store this in your VCS)
