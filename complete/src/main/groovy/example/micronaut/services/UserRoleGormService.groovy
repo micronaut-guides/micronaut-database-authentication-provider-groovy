@@ -6,7 +6,7 @@ import example.micronaut.domain.UserRole
 import grails.gorm.services.Query
 import grails.gorm.services.Service
 
-@Service(UserRole)
+@Service(UserRole) // <1>
 interface UserRoleGormService {
 
     UserRole save(User user, Role role)
