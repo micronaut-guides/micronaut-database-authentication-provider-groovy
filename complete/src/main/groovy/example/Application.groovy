@@ -19,7 +19,7 @@ class Application implements ApplicationEventListener<ServerStartupEvent> { // <
 
     @Override
     void onApplicationEvent(ServerStartupEvent event) { // <1>
-        registerService.register('user','user',['ROLE_GRAILS']) // <3>
+        registerService.register("sherlock@micronaut.example", "sherlock", 'elementary', ['ROLE_DETECTIVE']) // <3>
     }
 
     static void main(String[] args) {

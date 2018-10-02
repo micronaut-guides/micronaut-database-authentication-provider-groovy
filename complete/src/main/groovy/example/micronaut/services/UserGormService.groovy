@@ -6,7 +6,7 @@ import grails.gorm.services.Service
 @Service(User) // <1>
 interface UserGormService {
 
-    User save(String username, String password)
+    User save(String email, String username, String password)
 
     User findByUsername(String username)
 

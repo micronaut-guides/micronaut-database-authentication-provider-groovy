@@ -6,6 +6,7 @@ import org.grails.datastore.gorm.GormEntity
 
 @Entity // <1>
 class User implements GormEntity<User>, UserState { // <2>
+    String email
     String username
     String password
     boolean enabled = true
@@ -14,6 +15,7 @@ class User implements GormEntity<User>, UserState { // <2>
     boolean passwordExpired = false
 
     static constraints = {
+        email nullable: false, blank: false
         username nullable: false, blank: false, unique: true
         password nullable: false, blank: false, password: true
     }

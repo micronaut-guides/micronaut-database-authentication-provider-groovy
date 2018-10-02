@@ -7,6 +7,8 @@ import grails.gorm.transactions.Transactional
 import groovy.transform.CompileStatic
 import io.micronaut.security.authentication.providers.PasswordEncoder
 import javax.inject.Singleton
+import javax.validation.constraints.Email
+import javax.validation.constraints.NotBlank
 
 @CompileStatic
 @Singleton
@@ -28,12 +30,12 @@ class RegisterService {
     }
 
     @Transactional
-    void register(String username, String rawPassword, List<String> authorities) {
+    void register(@Email String email, @NotBlank String username, @NotBlank String rawPassword, List<String> authorities) {
 
         User user = userGormService.findByUsername(username)
         if ( !user ) {
             final String encodedPassword = passwordEncoder.encode(rawPassword)
-            user = userGormService.save(username, encodedPassword)
+            user = userGormService.save(email, username, encodedPassword)
         }
 
         if ( user && authorities ) {
