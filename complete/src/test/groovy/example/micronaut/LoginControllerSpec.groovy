@@ -64,6 +64,7 @@ class LoginControllerSpec extends Specification {
         authentication.getAttributes().containsKey('iss')
         authentication.getAttributes().containsKey('exp')
         authentication.getAttributes().containsKey('iat')
+        authentication.getAttributes().containsKey('email')
     }
 
     TokenValidator getTokenValidator() {
