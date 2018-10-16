@@ -42,33 +42,33 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom "io.micronaut:bom:$micronautVersion"
+        mavenBom "io.micronaut:micronaut-bom:$micronautVersion"
     }
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:inject-java"
-    compile "io.micronaut:http-client"
-    compile "io.micronaut:http-server-netty"
-    compile "io.micronaut:runtime-groovy"
-    compile "io.micronaut:inject"
-    compile "io.micronaut:runtime"
-    compileOnly "io.micronaut:inject-groovy"
-    compileOnly "io.micronaut:inject-java"
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    compile "io.micronaut:micronaut-http-client"
+    compile "io.micronaut:micronaut-http-server-netty"
+    compile "io.micronaut:micronaut-runtime-groovy"
+    compile "io.micronaut:micronaut-inject"
+    compile "io.micronaut:micronaut-runtime"
+    compileOnly "io.micronaut:micronaut-inject-groovy"
+    compileOnly "io.micronaut:micronaut-inject-java"
     runtime "ch.qos.logback:logback-classic:1.2.3"
-    testCompile "io.micronaut:inject-groovy"
+    testCompile "io.micronaut:micronaut-inject-groovy"
     testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
     testCompile "junit:junit:4.12"
-    testCompile "io.micronaut:inject-java"
+    testCompile "io.micronaut:micronaut-inject-java"
 
     //tag::security-jwt[]
-    compile "io.micronaut:security-jwt"
+    compile "io.micronaut:micronaut-security-jwt"
     //end::security-jwt[]
 
     //tag::security-ldap[]
-    compile "io.micronaut.configuration:security-ldap"
+    compile "io.micronaut.configuration:micronaut-security-ldap"
     //end::security-ldap[]
 
     //tag::springSecurityCrypto[]
@@ -76,8 +76,8 @@ dependencies {
     //end::springSecurityCrypto[]
 
     //tag::gorm[]
-    compile "io.micronaut.configuration:hibernate-validator"
-    compile "io.micronaut.configuration:hibernate-gorm"
+    compile "io.micronaut.configuration:micronaut-hibernate-validator"
+    compile "io.micronaut.configuration:micronaut-hibernate-gorm"
     compile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
     runtime "com.h2database:h2:$h2Version"
     runtime "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
