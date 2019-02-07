@@ -12,7 +12,7 @@ buildscript {
 
 ext {
 //tag::extGorm[]
-    gormVersion = '6.1.9.RELEASE'
+    gormVersion = '7.0.0.RC1'
     h2Version = '1.4.196'
     tomcatJdbcVersion = '8.5.28'
 //end::extGorm[]
@@ -38,6 +38,7 @@ repositories {
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://repo.grails.org/grails/core" }
 }
 
 dependencyManagement {
