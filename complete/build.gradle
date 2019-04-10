@@ -12,7 +12,7 @@ buildscript {
 
 ext {
 //tag::extGorm[]
-    gormVersion = '7.0.0.RC1'
+    gormVersion = '7.0.0.RELEASE'
     h2Version = '1.4.196'
     tomcatJdbcVersion = '8.5.28'
 //end::extGorm[]
