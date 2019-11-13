@@ -41,9 +41,9 @@ dependencies {
     //tag::gorm[]
     implementation "io.micronaut.configuration:micronaut-hibernate-validator"
     implementation "io.micronaut.configuration:micronaut-hibernate-gorm"
-    implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
-    runtime "com.h2database:h2:$h2Version"
-    runtime "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
+    implementation "org.grails:grails-datastore-gorm-hibernate5"
+    runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc"
     //end::gorm[]
 
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
