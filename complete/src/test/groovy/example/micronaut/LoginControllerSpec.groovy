@@ -1,38 +1,38 @@
 package example.micronaut
 
-import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.security.authentication.Authentication
-import io.micronaut.security.authentication.UserDetails
 import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.jwt.render.AccessRefreshToken
 import io.micronaut.security.token.jwt.validator.JwtTokenValidator
-import io.micronaut.security.token.validator.TokenValidator
+import io.micronaut.test.annotation.MicronautTest
 import io.reactivex.Flowable
-import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.inject.Inject
+
+@MicronautTest
 class LoginControllerSpec extends Specification {
 
-    @Shared
-    @AutoCleanup // <1>
-    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)  // <2>
+    @Inject
+    @Client('/')
+    HttpClient client
 
     @Shared
-    @AutoCleanup // <1>
-    HttpClient client = HttpClient.create(embeddedServer.URL) // <3>
+    @Inject
+    JwtTokenValidator tokenValidator
 
     void 'attempt to access /login without supplying credentials server responds BAD REQUEST'() {
         when:
         HttpRequest request = HttpRequest.create(HttpMethod.POST, '/login')
-                .accept(MediaType.APPLICATION_JSON_TYPE) // <4>
+                .accept(MediaType.APPLICATION_JSON_TYPE)
         client.toBlocking().exchange(request)
 
         then:
@@ -44,7 +44,7 @@ class LoginControllerSpec extends Specification {
         when:
         HttpRequest request = HttpRequest.create(HttpMethod.POST, '/login')
                 .accept(MediaType.APPLICATION_JSON_TYPE)
-                .body(new UsernamePasswordCredentials('sherlock', 'elementary')) // <4>
+                .body(new UsernamePasswordCredentials('sherlock', 'elementary'))
         HttpResponse<AccessRefreshToken> rsp = client.toBlocking().exchange(request, AccessRefreshToken)
 
         then:
@@ -64,9 +64,5 @@ class LoginControllerSpec extends Specification {
         authentication.getAttributes().containsKey('iss')
         authentication.getAttributes().containsKey('exp')
         authentication.getAttributes().containsKey('iat')
-    }
-
-    TokenValidator getTokenValidator() {
-        embeddedServer.applicationContext.getBean(JwtTokenValidator.class) // <5>
     }
 }

@@ -1,40 +1,41 @@
 package example.micronaut
 
-import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.jwt.endpoints.TokenRefreshRequest
 import io.micronaut.security.token.jwt.generator.claims.JwtClaims
 import io.micronaut.security.token.jwt.render.AccessRefreshToken
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken
 import io.micronaut.security.token.jwt.validator.JwtTokenValidator
-import io.micronaut.security.token.validator.TokenValidator
+import io.micronaut.test.annotation.MicronautTest
 import io.reactivex.Flowable
 import org.reactivestreams.Publisher
-import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.inject.Inject
+
+@MicronautTest
 class OauthControllerSpec extends Specification {
 
-    @Shared
-    @AutoCleanup  // <1>
-    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer) // <2>
+    @Inject
+    @Client('/')
+    HttpClient client
 
     @Shared
-    @AutoCleanup  // <1>
-    HttpClient client = HttpClient.create(embeddedServer.URL) // <3>
+    @Inject
+    JwtTokenValidator tokenValidator
 
     void '/oauth/access_token endpoint returns BAD request if required parameters not present'() {
         when:
         HttpRequest request = HttpRequest.create(HttpMethod.POST, '/oauth/access_token')
-                .accept(MediaType.APPLICATION_FORM_URLENCODED_TYPE) // <4>
+                .accept(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
         client.toBlocking().exchange(request)
 
         then:
@@ -46,7 +47,7 @@ class OauthControllerSpec extends Specification {
         when:
         HttpRequest request = HttpRequest.create(HttpMethod.POST, '/login')
                 .accept(MediaType.APPLICATION_JSON_TYPE)
-                .body(new UsernamePasswordCredentials('euler', 'password'))  // <4>
+                .body(new UsernamePasswordCredentials('euler', 'password'))
         HttpResponse<BearerAccessRefreshToken> rsp = client.toBlocking().exchange(request, BearerAccessRefreshToken)
 
         then:
@@ -65,7 +66,7 @@ class OauthControllerSpec extends Specification {
         sleep(1_000)
         request = HttpRequest.create(HttpMethod.POST, '/oauth/access_token')
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new TokenRefreshRequest("refresh_token", refreshToken)) // <4>
+                .body(new TokenRefreshRequest("refresh_token", refreshToken))
         HttpResponse<AccessRefreshToken> tokenRsp = client.toBlocking().exchange(request, AccessRefreshToken)
 
         then:
@@ -77,7 +78,6 @@ class OauthControllerSpec extends Specification {
         tokenRsp.body.get().accessToken != accessToken
 
         when:
-        TokenValidator tokenValidator = embeddedServer.applicationContext.getBean(JwtTokenValidator) // <5>
         Publisher authentication = tokenValidator.validateToken(accessToken)
 
         then:

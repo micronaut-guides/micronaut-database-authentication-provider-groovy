@@ -5,7 +5,7 @@ Add `security-jwt` dependency:
 [source,groovy]
 .build.gradle
 ----
-include::{sourceDir}/build.gradle[tag=security-jwt]
+include::{sourceDir}/build.gradle[indent=0,tag=security-jwt]
 ----
 
 Modify `application.yml` to enable security:

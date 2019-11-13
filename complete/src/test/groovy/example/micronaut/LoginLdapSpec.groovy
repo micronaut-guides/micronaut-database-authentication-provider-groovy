@@ -1,33 +1,34 @@
 package example.micronaut
 
-import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.jwt.generator.claims.JwtClaims
 import io.micronaut.security.token.jwt.render.AccessRefreshToken
 import io.micronaut.security.token.jwt.validator.JwtTokenValidator
-import io.micronaut.security.token.validator.TokenValidator
+import io.micronaut.test.annotation.MicronautTest
 import io.reactivex.Flowable
 import org.reactivestreams.Publisher
-import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.inject.Inject
+
+@MicronautTest // <1>
 class LoginLdapSpec extends Specification {
 
-    @Shared
-    @AutoCleanup // <1>
-    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer) // <2>
+    @Inject
+    @Client('/')
+    HttpClient client // <2>
 
     @Shared
-    @AutoCleanup // <1>
-    HttpClient client = HttpClient.create(embeddedServer.URL) // <3>
+    @Inject
+    JwtTokenValidator tokenValidator // <3>
 
     void '/login with valid credentials returns 200 and access token and refresh token'() {
         when:
@@ -73,7 +74,7 @@ class LoginLdapSpec extends Specification {
         accessToken
 
         when:
-        Publisher authentication = tokenValidator.validateToken(accessToken)
+        Publisher authentication = tokenValidator.validateToken(accessToken) // <6>
 
         then:
         Flowable.fromPublisher(authentication).blockingFirst()
@@ -100,16 +101,12 @@ class LoginLdapSpec extends Specification {
         refreshToken
 
         when:
-        Publisher authentication = tokenValidator.validateToken(refreshToken)
+        Publisher authentication = tokenValidator.validateToken(refreshToken) // <6>
 
         then:
         Flowable.fromPublisher(authentication).blockingFirst()
 
         and:
         !Flowable.fromPublisher(authentication).blockingFirst().getAttributes().get(JwtClaims.EXPIRATION_TIME)
-    }
-
-    TokenValidator getTokenValidator() {
-        embeddedServer.applicationContext.getBean(JwtTokenValidator.class) // <6>
     }
 }

@@ -6,10 +6,9 @@ Create a test which verifies an LDAP user can login.
 include::{sourceDir}/src/test/groovy/example/micronaut/LoginLdapSpec.groovy[]
 ----
 
-<1> The AutoCleanup extension makes sure the `close()` method of an object (e.g. `EmbeddedServer`) is called each time a feature method is finished
-<2> To run the application from a unit test you can use the http://docs.micronaut.io/snapshot/api/io/micronaut/runtime/server/EmbeddedServer.html[EmbeddedServer] interface
-<3> Register a `HttpClient` bean in the application context and point it to the embedded server URL. The `EmbeddedServer` interface provides the URL of the server under test which runs on a random port.
+<1> Annotate the class with `@MicronatTest` to let Micronaut starts the embedder server and inject the beans. More info: https://micronaut-projects.github.io/micronaut-test/latest/guide/index.html[https://micronaut-projects.github.io/micronaut-test/latest/guide/index.html].
+<2> Inject the `HttpClient` bean in the application context.
+<3> Inject to `TokenValidator` bean.
 <4> Creating HTTP Requests is easy thanks to Micronaut's fluid API.
 <5> If you attempt to access a secured endpoint without authentication, 401 is returned
-<6> You can retrieve a bean from the application context easily with `getBean(Class)`
-
+<6> Use the `tokenValidator` bean previously injected.
