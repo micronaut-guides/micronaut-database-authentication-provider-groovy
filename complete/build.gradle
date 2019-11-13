@@ -1,96 +1,73 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE"
-        classpath "net.ltgt.gradle:gradle-apt-plugin:0.15"
-    }
-}
-
-ext {
-//tag::extGorm[]
-    gormVersion = '7.0.0.RELEASE'
-    h2Version = '1.4.196'
-    tomcatJdbcVersion = '8.5.28'
-//end::extGorm[]
-//tag::extSpringSecurityCrypto[]
-    springSecurityCryptoVersion='4.2.5.RELEASE'
-//end::extSpringSecurityCrypto[]
+plugins {
+    id "groovy"
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "application"
 }
 
 version "0.1"
-group "example"
-
-apply plugin:"io.spring.dependency-management"
-apply plugin:"com.github.johnrengelman.shadow"
-apply plugin:"application"
-apply plugin:"groovy"
-apply plugin:"java"
-apply plugin:"net.ltgt.apt-eclipse"
-apply plugin:"net.ltgt.apt-idea"
-
+group "foog"
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven { url "https://jcenter.bintray.com" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://repo.grails.org/grails/core" }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "io.micronaut:micronaut-bom:$micronautVersion"
-    }
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    compile "io.micronaut:micronaut-http-client"
-    compile "io.micronaut:micronaut-http-server-netty"
-    compile "io.micronaut:micronaut-runtime-groovy"
-    compile "io.micronaut:micronaut-inject"
-    compile "io.micronaut:micronaut-runtime"
+    compileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
     compileOnly "io.micronaut:micronaut-inject-groovy"
-    compileOnly "io.micronaut:micronaut-inject-java"
-    runtime "ch.qos.logback:logback-classic:1.2.3"
-    testCompile "io.micronaut:micronaut-inject-groovy"
-    testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
-        exclude group: "org.codehaus.groovy", module: "groovy-all"
-    }
-    testCompile "junit:junit:4.12"
-    testCompile "io.micronaut:micronaut-inject-java"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-runtime-groovy"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "io.micronaut:micronaut-http-client"
 
     //tag::security-jwt[]
-    compile "io.micronaut:micronaut-security-jwt"
+    implementation "io.micronaut:micronaut-security-jwt"
     //end::security-jwt[]
 
     //tag::security-ldap[]
-    compile "io.micronaut.configuration:micronaut-security-ldap"
+    implementation "io.micronaut.configuration:micronaut-security-ldap"
     //end::security-ldap[]
 
     //tag::springSecurityCrypto[]
-    compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
+    implementation "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
     //end::springSecurityCrypto[]
 
     //tag::gorm[]
-    compile "io.micronaut.configuration:micronaut-hibernate-validator"
-    compile "io.micronaut.configuration:micronaut-hibernate-gorm"
-    compile "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
+    implementation "io.micronaut.configuration:micronaut-hibernate-validator"
+    implementation "io.micronaut.configuration:micronaut-hibernate-gorm"
+    implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
     runtime "com.h2database:h2:$h2Version"
     runtime "org.apache.tomcat:tomcat-jdbc:$tomcatJdbcVersion"
     //end::gorm[]
+
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    testCompileOnly platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.5.0"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "example.Application"
+tasks.withType(GroovyCompile) {
+    groovyOptions.forkOptions.jvmArgs.add('-Dgroovy.parameters=true')
 }
 
 shadowJar {
     mergeServiceFiles()
 }
 
-run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
-
-mainClassName = "example.Application"
-compileJava.options.compilerArgs += '-parameters'
-compileTestJava.options.compilerArgs += '-parameters'
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
