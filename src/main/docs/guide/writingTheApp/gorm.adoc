@@ -20,3 +20,11 @@ dependencies {
 include::{sourceDir}/build.gradle[tag=gorm]
 }
 ----
+
+And the database configuration:
+
+[source,yaml]
+.src/main/resources/application.yml
+----
+include::{sourceDir}/src/main/resources/application.yml[tag=datasource]
+----
