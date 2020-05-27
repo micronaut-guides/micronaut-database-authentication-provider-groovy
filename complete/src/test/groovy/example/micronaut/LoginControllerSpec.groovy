@@ -21,7 +21,6 @@ import spock.lang.Specification
 
 import javax.inject.Inject
 
-@Property(name = "micronaut.security.ldap.default.enabled", value = StringUtils.FALSE)
 @MicronautTest
 class LoginControllerSpec extends Specification {
 
