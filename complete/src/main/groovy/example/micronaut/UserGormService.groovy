@@ -1,4 +1,4 @@
-package example.micronaut.services
+package example.micronaut
 
 import example.micronaut.domain.User
 import grails.gorm.services.Service
@@ -13,4 +13,6 @@ interface UserGormService {
     User findById(Serializable id)
 
     void delete(Serializable id)
+
+    int count()
 }

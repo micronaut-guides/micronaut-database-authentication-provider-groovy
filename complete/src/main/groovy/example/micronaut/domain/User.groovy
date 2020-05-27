@@ -1,7 +1,7 @@
 package example.micronaut.domain
 
+import example.micronaut.UserState
 import grails.gorm.annotation.Entity
-import io.micronaut.security.authentication.providers.UserState
 import org.grails.datastore.gorm.GormEntity
 
 @Entity // <1>

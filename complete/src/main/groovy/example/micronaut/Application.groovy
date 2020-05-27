@@ -1,6 +1,6 @@
-package example
+package example.micronaut
 
-import example.micronaut.services.RegisterService
+
 import groovy.transform.CompileStatic
 import io.micronaut.runtime.Micronaut
 import javax.inject.Singleton

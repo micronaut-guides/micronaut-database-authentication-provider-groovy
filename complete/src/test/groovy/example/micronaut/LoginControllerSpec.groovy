@@ -1,5 +1,8 @@
 package example.micronaut
 
+
+import io.micronaut.context.annotation.Property
+import io.micronaut.core.util.StringUtils
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -18,6 +21,7 @@ import spock.lang.Specification
 
 import javax.inject.Inject
 
+@Property(name = "micronaut.security.ldap.default.enabled", value = StringUtils.FALSE)
 @MicronautTest
 class LoginControllerSpec extends Specification {
 
@@ -28,6 +32,9 @@ class LoginControllerSpec extends Specification {
     @Shared
     @Inject
     JwtTokenValidator tokenValidator
+
+    @Inject
+    UserGormService userGormService
 
     void 'attempt to access /login without supplying credentials server responds BAD REQUEST'() {
         when:
@@ -40,7 +47,10 @@ class LoginControllerSpec extends Specification {
         e.status.code == 400
     }
 
-    void '/login with valid credentials for a database user returns 200 and access token and refresh token'() {
+    void '/login with valid credentials for a database user returns 200 and access token'() {
+        expect:
+        userGormService.count() > 0
+
         when:
         HttpRequest request = HttpRequest.create(HttpMethod.POST, '/login')
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -51,7 +61,6 @@ class LoginControllerSpec extends Specification {
         rsp.status.code == 200
         rsp.body.isPresent()
         rsp.body.get().accessToken
-        rsp.body.get().refreshToken
 
         when:
         String accessToken = rsp.body.get().accessToken

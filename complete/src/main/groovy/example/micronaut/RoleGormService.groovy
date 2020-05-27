@@ -1,4 +1,4 @@
-package example.micronaut.services
+package example.micronaut
 
 import example.micronaut.domain.Role
 import grails.gorm.services.Service

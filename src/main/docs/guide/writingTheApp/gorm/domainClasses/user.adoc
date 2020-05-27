@@ -1,3 +1,10 @@
+Create a interface `UserState` to model the user state.
+
+[source,groovy]
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/UserState.groovy[]
+----
+
 Create `User` domain class to store users within our application.
 
 [source,groovy]

@@ -1,27 +1,21 @@
+micronaut:
+  application:
+    name: complete
 ---
 #tag::security[]
 micronaut:
-  application:
-    name: security # <1>
   security:
-    enabled: true # <2>
-    endpoints:
-      login:
-        enabled: true # <3>
-      oauth:
-        enabled: true # <4>
+    authentication: bearer # <1>
     token:
       jwt:
-        enabled: true # <5>
         signatures:
           secret:
-            generator: # <6>
-              secret: pleaseChangeThisSecretForANewOne  # <7>
+            generator: # <2>
+              secret: pleaseChangeThisSecretForANewOne  # <3>
 #end::security[]
 #tag::ldap[]
     ldap:
       default: # <1>
-        enabled: true
         context:
           server: 'ldap://ldap.forumsys.com:389'  # <2>
           managerDn: 'cn=read-only-admin,dc=example,dc=com'  # <3>
@@ -31,6 +25,7 @@ micronaut:
         groups:
           enabled: true  # <6>
           base: "dc=example,dc=com" # <7>
+
 #end::ldap[]
 ---
 #tag::datasource[]

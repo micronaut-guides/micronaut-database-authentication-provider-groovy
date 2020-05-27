@@ -1,8 +1,4 @@
-package example.micronaut.services
-
-import io.micronaut.security.authentication.providers.AuthoritiesFetcher
-import io.reactivex.Flowable
-import org.reactivestreams.Publisher
+package example.micronaut
 
 import javax.inject.Singleton
 
@@ -16,7 +12,7 @@ class AuthoritiesFetcherService implements AuthoritiesFetcher {
     }
 
     @Override
-    Publisher<List<String>> findAuthoritiesByUsername(String username) {
-        Flowable.just(userRoleGormService.findAllAuthoritiesByUsername(username))
+    List<String> findAuthoritiesByUsername(String username) {
+        userRoleGormService.findAllAuthoritiesByUsername(username)
     }
 }

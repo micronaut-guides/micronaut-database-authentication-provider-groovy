@@ -2,7 +2,7 @@ We are going to register a user when the app starts up.
 
 [source,groovy]
 ----
-include::{sourceDir}/src/main/groovy/example/Application.groovy[]
+include::{sourceDir}/src/main/groovy/example/micronaut/Application.groovy[]
 ----
 
 <1> Implements `ServerStartupEvent` which enables to execute a method when the application starts.
@@ -14,5 +14,5 @@ Create `RegisterService`
 
 [source,groovy]
 ----
-include::{sourceDir}/src/main/groovy/example/micronaut/services/RegisterService.groovy[]
+include::{sourceDir}/src/main/groovy/example/micronaut/RegisterService.groovy[]
 ----

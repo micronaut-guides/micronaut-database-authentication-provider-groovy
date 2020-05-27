@@ -21,7 +21,6 @@ writingTheApp:
     passwordEncoder: Password Encoder
   ldapTest: LDAP Authentication Provider test
   loginTest: Login Testing
-  oauthTest: Oauth Testing
 testingTheApp:
   title: Testing the Application
 runningTheApp:

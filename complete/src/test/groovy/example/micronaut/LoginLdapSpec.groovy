@@ -41,7 +41,6 @@ class LoginLdapSpec extends Specification {
         rsp.status.code == 200
         rsp.body.isPresent()
         rsp.body.get().accessToken
-        rsp.body.get().refreshToken
     }
 
     void '/login with invalid credentials returns UNAUTHORIZED'() {
@@ -79,34 +78,7 @@ class LoginLdapSpec extends Specification {
         then:
         Flowable.fromPublisher(authentication).blockingFirst()
 
-        and:
+        and: 'access token contains an expiration date'
         Flowable.fromPublisher(authentication).blockingFirst().getAttributes().get(JwtClaims.EXPIRATION_TIME)
-    }
-
-    void 'refresh token does not contain expiration date'() {
-        when:
-        HttpRequest request = HttpRequest.create(HttpMethod.POST, '/login')
-                .accept(MediaType.APPLICATION_JSON_TYPE)
-                .body(new UsernamePasswordCredentials('euler', 'password')) // <4>
-        HttpResponse<AccessRefreshToken> rsp = client.toBlocking().exchange(request, AccessRefreshToken)
-
-        then:
-        rsp.status.code == 200
-        rsp.body.isPresent()
-
-        when:
-        String refreshToken = rsp.body.get().refreshToken
-
-        then:
-        refreshToken
-
-        when:
-        Publisher authentication = tokenValidator.validateToken(refreshToken) // <6>
-
-        then:
-        Flowable.fromPublisher(authentication).blockingFirst()
-
-        and:
-        !Flowable.fromPublisher(authentication).blockingFirst().getAttributes().get(JwtClaims.EXPIRATION_TIME)
     }
 }

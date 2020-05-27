@@ -1,7 +1,0 @@
-Test `/oauth/access_token` endpoint. We verify it is possible to refresh an access token.
-
-[source,groovy]
-.src/test/groovy/example/micronaut/OauthControllerSpec.groovy
-----
-include::{sourceDir}/src/test/groovy/example/micronaut/OauthControllerSpec.groovy[]
-----

@@ -1,11 +1,10 @@
-package example.micronaut.services
+package example.micronaut
 
 import example.micronaut.domain.Role
 import example.micronaut.domain.User
 import example.micronaut.domain.UserRole
 import grails.gorm.transactions.Transactional
 import groovy.transform.CompileStatic
-import io.micronaut.security.authentication.providers.PasswordEncoder
 import javax.inject.Singleton
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank

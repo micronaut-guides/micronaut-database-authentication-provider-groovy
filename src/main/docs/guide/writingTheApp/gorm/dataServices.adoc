@@ -4,21 +4,21 @@ Create various GORM Data services:
 
 [source,groovy]
 ----
-include::{sourceDir}/src/main/groovy/example/micronaut/services/UserGormService.groovy[]
+include::{sourceDir}/src/main/groovy/example/micronaut/UserGormService.groovy[]
 ----
 
 <1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
 
 [source,groovy]
 ----
-include::{sourceDir}/src/main/groovy/example/micronaut/services/RoleGormService.groovy[]
+include::{sourceDir}/src/main/groovy/example/micronaut/RoleGormService.groovy[]
 ----
 
 <1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
 
 [source,groovy]
 ----
-include::{sourceDir}/src/main/groovy/example/micronaut/services/UserRoleGormService.groovy[]
+include::{sourceDir}/src/main/groovy/example/micronaut/UserRoleGormService.groovy[]
 ----
 
 <1> Annotate with `@Service` to designate a http://gorm.grails.org/latest/hibernate/manual/index.html#dataServices[GORM Data Services] which is registered as a `Singleton`.
