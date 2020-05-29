@@ -1,5 +1,7 @@
 package example.micronaut
 
+import io.micronaut.context.annotation.Property
+import io.micronaut.core.util.StringUtils
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -18,6 +20,7 @@ import spock.lang.Specification
 
 import javax.inject.Inject
 
+@Property(name = 'micronaut.security.ldap.default.enabled', value = StringUtils.FALSE)
 @MicronautTest
 class LoginControllerSpec extends Specification {
 
