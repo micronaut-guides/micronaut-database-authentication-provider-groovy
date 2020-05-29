@@ -39,7 +39,7 @@ class LoginControllerSpec extends Specification {
         client.toBlocking().exchange(request)
 
         then:
-        HttpClientResponseException e = thrown(HttpClientResponseException)
+        HttpClientResponseException e = thrown()
         e.status.code == 400
     }
 
@@ -54,6 +54,7 @@ class LoginControllerSpec extends Specification {
         HttpResponse<AccessRefreshToken> rsp = client.toBlocking().exchange(request, AccessRefreshToken)
 
         then:
+        noExceptionThrown()
         rsp.status.code == 200
         rsp.body.isPresent()
         rsp.body.get().accessToken
@@ -61,7 +62,6 @@ class LoginControllerSpec extends Specification {
         when:
         String accessToken = rsp.body.get().accessToken
         Authentication authentication = Flowable.fromPublisher(tokenValidator.validateToken(accessToken)).blockingFirst()
-        println authentication.getAttributes()
 
         then:
         authentication.getAttributes()
