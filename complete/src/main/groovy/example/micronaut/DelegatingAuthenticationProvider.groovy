@@ -2,6 +2,7 @@ package example.micronaut
 
 import edu.umd.cs.findbugs.annotations.Nullable
 import io.micronaut.http.HttpRequest
+import io.micronaut.security.authentication.AuthenticationException
 import io.micronaut.security.authentication.AuthenticationFailed
 import io.micronaut.security.authentication.AuthenticationFailureReason
 import io.micronaut.security.authentication.AuthenticationProvider
@@ -36,7 +37,7 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
             UserState user = fetchUserState(authenticationRequest)
             Optional<AuthenticationFailed> authenticationFailedOptional = checkForFailure(user, authenticationRequest)
             if (authenticationFailedOptional.isPresent()) {
-                emitter.onNext(authenticationFailedOptional.get())
+                emitter.onError(new AuthenticationException(authenticationFailedOptional.get()))
             } else {
                 emitter.onNext(createSuccessfulAuthenticationResponse(authenticationRequest, user))
             }
