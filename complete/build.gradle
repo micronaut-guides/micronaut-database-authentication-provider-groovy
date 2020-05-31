@@ -15,21 +15,6 @@ repositories {
 configurations {
     // for dependencies that are needed for development only
     developmentOnly
-
-    all {
-        resolutionStrategy {
-            force 'io.micronaut:micronaut-security-annotations:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security-ldap:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security-jwt:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut.configuration:micronaut-security-oauth2:2.0.0.BUILD-SNAPSHOT'
-
-            force "org.grails:grails-datastore-core:$gormVersion"
-            force "org.grails:grails-datastore-gorm:$gormVersion"
-            force "org.grails:grails-datastore-gorm-hiberante5:$gormVersion"
-            force "org.grails:grails-datastore-gorm-validation:$gormVersion"
-        }
-    }
 }
 
 dependencies {
@@ -44,12 +29,12 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
 
     //tag::security-jwt[]
-    compileOnly("io.micronaut:micronaut-security-annotations:2.0.0.BUILD-SNAPSHOT")
-    implementation("io.micronaut:micronaut-security-jwt:2.0.0.BUILD-SNAPSHOT")
+    compileOnly("io.micronaut:micronaut-security-annotations")
+    implementation("io.micronaut:micronaut-security-jwt")
     //end::security-jwt[]
 
     //tag::security-ldap[]
-    implementation("io.micronaut.configuration:micronaut-security-ldap:2.0.0.BUILD-SNAPSHOT")
+    implementation("io.micronaut.configuration:micronaut-security-ldap")
     //end::security-ldap[]
 
     //tag::springSecurityCrypto[]
@@ -58,8 +43,7 @@ dependencies {
 
     //tag::gorm[]
     implementation("io.micronaut.configuration:micronaut-hibernate-validator")
-    implementation("io.micronaut.configuration:micronaut-hibernate-gorm:2.0.0.M1")
-    implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
+    implementation("io.micronaut.configuration:micronaut-hibernate-gorm")
 
     runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
     runtimeOnly("com.h2database:h2")
