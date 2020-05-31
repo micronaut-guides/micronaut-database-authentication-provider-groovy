@@ -35,9 +35,9 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
                                                    AuthenticationRequest<?, ?> authenticationRequest) {
         Flowable.create({ emitter ->
             UserState user = fetchUserState(authenticationRequest)
-            Optional<AuthenticationFailed> authenticationFailedOptional = checkForFailure(user, authenticationRequest)
-            if (authenticationFailedOptional.isPresent()) {
-                emitter.onError(new AuthenticationException(authenticationFailedOptional.get()))
+            Optional<AuthenticationFailed> authenticationFailed = validate(user, authenticationRequest)
+            if (authenticationFailed.isPresent()) {
+                emitter.onError(new AuthenticationException(authenticationFailed.get()))
             } else {
                 emitter.onNext(createSuccessfulAuthenticationResponse(authenticationRequest, user))
             }
@@ -45,24 +45,28 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
         }, BackpressureStrategy.ERROR)
     }
 
-    protected Optional<AuthenticationFailed> checkForFailure(UserState user, AuthenticationRequest authenticationRequest) {
+    protected Optional<AuthenticationFailed> validate(UserState user, AuthenticationRequest authenticationRequest) {
 
-        if (!user.isEnabled()) {
-            return Optional.of(new AuthenticationFailed(AuthenticationFailureReason.USER_DISABLED))
+        AuthenticationFailed authenticationFailed = null
+        if (user == null) {
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND)
+
+        } else if (!user.isEnabled()) {
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.USER_DISABLED)
 
         } else if (user.isAccountExpired()) {
-            return Optional.of(new AuthenticationFailed(AuthenticationFailureReason.ACCOUNT_EXPIRED))
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.ACCOUNT_EXPIRED)
 
         } else if (user.isAccountLocked()) {
-            return Optional.of(new AuthenticationFailed(AuthenticationFailureReason.ACCOUNT_LOCKED))
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.ACCOUNT_LOCKED)
 
         } else if (user.isPasswordExpired()) {
-            return Optional.of(new AuthenticationFailed(AuthenticationFailureReason.PASSWORD_EXPIRED))
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.PASSWORD_EXPIRED)
+
+        } else if (!passwordEncoder.matches(authenticationRequest.getSecret().toString(), user.getPassword())) {
+            authenticationFailed = new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH)
         }
-        if (!passwordEncoder.matches(authenticationRequest.getSecret().toString(), user.getPassword())) {
-            return Optional.of(new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH))
-        }
-        Optional.empty()
+        Optional.ofNullable(authenticationFailed)
     }
 
     protected UserState fetchUserState(AuthenticationRequest authenticationRequest) {
@@ -72,12 +76,6 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
 
     protected AuthenticationResponse createSuccessfulAuthenticationResponse(AuthenticationRequest authenticationRequest, UserState user) {
         List<String> authorities = authoritiesFetcher.findAuthoritiesByUsername(user.getUsername())
-        createSuccessfulAuthenticationResponse(authenticationRequest, user, authorities)
-    }
-
-    protected AuthenticationResponse createSuccessfulAuthenticationResponse(AuthenticationRequest authenticationRequest,
-                                                                            UserState user,
-                                                                            List<String> authorities) {
         new UserDetails(user.getUsername(), authorities)
     }
 }

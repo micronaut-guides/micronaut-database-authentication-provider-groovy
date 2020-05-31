@@ -1,0 +1,7 @@
+Create an authentication provider which uses the interfaces you wrote in the previous sections.
+
+[source,groovy]
+.src/main/groovy/example/micronaut/DelegatingAuthenticationProvider.groovy
+----
+include::{sourceDir}/src/main/groovy/example/micronaut/DelegatingAuthenticationProvider.groovy[]
+----

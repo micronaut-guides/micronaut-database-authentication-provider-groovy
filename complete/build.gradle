@@ -20,6 +20,7 @@ configurations {
         resolutionStrategy {
             force 'io.micronaut:micronaut-security-annotations:2.0.0.BUILD-SNAPSHOT'
             force 'io.micronaut:micronaut-security:2.0.0.BUILD-SNAPSHOT'
+            force 'io.micronaut:micronaut-security-ldap:2.0.0.BUILD-SNAPSHOT'
             force 'io.micronaut:micronaut-security-jwt:2.0.0.BUILD-SNAPSHOT'
             force 'io.micronaut.configuration:micronaut-security-oauth2:2.0.0.BUILD-SNAPSHOT'
 

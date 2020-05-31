@@ -19,6 +19,7 @@ writingTheApp:
     userFetcher: User Fetcher
     authoritiesFetcher: Authorities Fetcher
     passwordEncoder: Password Encoder
+    authenticationProvider: Authentication Provider
   ldapTest: LDAP Authentication Provider test
   loginTest: Login Testing
 testingTheApp:
