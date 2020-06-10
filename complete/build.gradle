@@ -61,7 +61,7 @@ dependencies {
     implementation("io.micronaut.configuration:micronaut-hibernate-gorm:2.0.0.M1")
     implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
 
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
+    runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.apache.tomcat:tomcat-jdbc")
     //end::gorm[]
