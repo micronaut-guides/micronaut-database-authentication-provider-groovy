@@ -57,7 +57,7 @@ dependencies {
     //end::springSecurityCrypto[]
 
     //tag::gorm[]
-    implementation("io.micronaut.configuration:micronaut-hibernate-validator")
+    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
     implementation("io.micronaut.configuration:micronaut-hibernate-gorm")
     implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
 
