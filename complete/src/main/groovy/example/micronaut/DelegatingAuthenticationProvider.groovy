@@ -2,6 +2,7 @@ package example.micronaut
 
 import edu.umd.cs.findbugs.annotations.Nullable
 import io.micronaut.http.HttpRequest
+import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.security.authentication.AuthenticationException
 import io.micronaut.security.authentication.AuthenticationFailed
 import io.micronaut.security.authentication.AuthenticationFailureReason
@@ -11,9 +12,13 @@ import io.micronaut.security.authentication.AuthenticationResponse
 import io.micronaut.security.authentication.UserDetails
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Publisher
 
+import javax.inject.Named
 import javax.inject.Singleton
+import java.util.concurrent.ExecutorService
 
 @Singleton
 class DelegatingAuthenticationProvider implements AuthenticationProvider {
@@ -21,13 +26,16 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
     protected final UserFetcher userFetcher
     protected final PasswordEncoder passwordEncoder
     protected final AuthoritiesFetcher authoritiesFetcher
+    protected final Scheduler scheduler
 
     DelegatingAuthenticationProvider(UserFetcher userFetcher,
                                      PasswordEncoder passwordEncoder,
-                                     AuthoritiesFetcher authoritiesFetcher) {
+                                     AuthoritiesFetcher authoritiesFetcher,
+                                     @Named(TaskExecutors.IO) ExecutorService executorService) { // <1>
         this.userFetcher = userFetcher
         this.passwordEncoder = passwordEncoder
         this.authoritiesFetcher = authoritiesFetcher
+        this.scheduler = Schedulers.from(executorService)
     }
 
     @Override
@@ -43,6 +51,7 @@ class DelegatingAuthenticationProvider implements AuthenticationProvider {
             }
             emitter.onComplete()
         }, BackpressureStrategy.ERROR)
+                .subscribeOn(scheduler) // <2>
     }
 
     protected Optional<AuthenticationFailed> validate(UserState user, AuthenticationRequest authenticationRequest) {
