@@ -57,7 +57,7 @@ dependencies {
     //end::springSecurityCrypto[]
 
     //tag::gorm[]
-    //implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
+    implementation("io.micronaut.configuration:micronaut-hibernate-validator")
     implementation("io.micronaut.configuration:micronaut-hibernate-gorm")
     implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
 
@@ -65,6 +65,7 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.apache.tomcat:tomcat-jdbc")
     //end::gorm[]
+
 
     testImplementation enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation("io.micronaut:micronaut-inject-groovy")
