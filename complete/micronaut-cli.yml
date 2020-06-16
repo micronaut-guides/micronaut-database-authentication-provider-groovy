@@ -3,4 +3,4 @@ defaultPackage: example.micronaut
 testFramework: spock
 sourceLanguage: groovy
 buildTool: gradle
-features: [annotation-api, app-name, docker, gradle, groovy, groovy-application, h2, hibernate-gorm, hibernate-validator, http-client, logback, netty-server, readme, security-annotations, security-jwt, security-ldap, shade, spock, yaml]
+features: [app-name, docker, file-watch, gradle, groovy, groovy-application, h2, hibernate-gorm, hibernate-validator, http-client, logback, netty-server, readme, security-annotations, security-jwt, security-ldap, shade, spock, yaml]

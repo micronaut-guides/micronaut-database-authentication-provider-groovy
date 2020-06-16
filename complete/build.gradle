@@ -1,6 +1,6 @@
 plugins {
     id "groovy"
-    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
 }
 
@@ -8,6 +8,7 @@ version "0.1"
 group "example.micronaut"
 
 repositories {
+    mavenCentral()
     jcenter()
     maven { url "https://oss.jfrog.org/oss-snapshot-local" }
 }
@@ -15,59 +16,42 @@ repositories {
 configurations {
     // for dependencies that are needed for development only
     developmentOnly
-
-    all {
-        resolutionStrategy {
-            force 'io.micronaut:micronaut-security-annotations:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security-ldap:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut:micronaut-security-jwt:2.0.0.BUILD-SNAPSHOT'
-            force 'io.micronaut.configuration:micronaut-security-oauth2:2.0.0.BUILD-SNAPSHOT'
-
-            force "org.grails:grails-datastore-core:$gormVersion"
-            force "org.grails:grails-datastore-gorm:$gormVersion"
-            force "org.grails:grails-datastore-gorm-hiberante5:$gormVersion"
-            force "org.grails:grails-datastore-gorm-validation:$gormVersion"
-        }
-    }
 }
 
 dependencies {
-    compileOnly(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
+    compileOnly(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     compileOnly("io.micronaut:micronaut-inject-groovy")
-    implementation(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
+
+    implementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut:micronaut-runtime-groovy")
-    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut.groovy:micronaut-runtime-groovy")
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
 
+    //tag::gorm[]
+    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
+    implementation("io.micronaut.groovy:micronaut-hibernate-gorm")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.apache.tomcat:tomcat-jdbc")
+    //end::gorm[]
+
     //tag::security-jwt[]
-    compileOnly("io.micronaut.security:micronaut-security-annotations:2.0.0.BUILD-SNAPSHOT")
-    implementation("io.micronaut.security:micronaut-security-jwt:2.0.0.BUILD-SNAPSHOT")
+    compileOnly("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.security:micronaut-security-jwt")
     //end::security-jwt[]
 
     //tag::security-ldap[]
-    implementation("io.micronaut.security:micronaut-security-ldap:2.0.0.BUILD-SNAPSHOT")
+    implementation("io.micronaut.security:micronaut-security-ldap")
     //end::security-ldap[]
 
     //tag::springSecurityCrypto[]
     implementation "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
     //end::springSecurityCrypto[]
 
-    //tag::gorm[]
-    implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
-    implementation("io.micronaut.configuration:micronaut-hibernate-gorm")
-    implementation "org.grails:grails-datastore-gorm-hibernate5:$gormVersion"
-
     runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.apache.tomcat:tomcat-jdbc")
-    //end::gorm[]
 
-
-    testImplementation enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation("io.micronaut:micronaut-inject-groovy")
     testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
@@ -100,6 +84,13 @@ shadowJar {
 tasks.withType(JavaExec) {
     classpath += configurations.developmentOnly
     jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+    if (gradle.startParameter.continuous) {
+        systemProperties(
+            'micronaut.io.watch.restart':'true',
+            'micronaut.io.watch.enabled':'true',
+            "micronaut.io.watch.paths":"src/main"
+        )
+    }
 }
 
 
