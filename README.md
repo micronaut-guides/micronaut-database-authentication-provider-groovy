@@ -1,6 +1,8 @@
-# LDAP and Database authentication providers #
+# This guide has been deprecated and moved to https://github.com/micronaut-projects/micronaut-guides. Please open any issue or pull request in that repository.
 
-The guide is available at http://guides.micronaut.io/micronaut-database-authentication-provider-groovy/guide/index.html
+Old Guide: 
+
+https://micronaut-projects.github.io/micronaut-guides-old/micronaut-database-authentication-provider-groovy/guide/index.html
 
 ## Branch Structure
 
